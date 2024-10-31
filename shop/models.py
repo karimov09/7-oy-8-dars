@@ -39,6 +39,17 @@ class Product(models.Model):
         verbose_name_plural = "Mahsulotlar"
         ordering = ('-pk',)
 
+class image(models.Model):
+    image = models.ImageField(upload_to="products/image/", verbose_name="rasmi")
+    Product = models.ForeignKey(Product,on_delete=models.CASCADE, verbose_name="Mahsulot")
+
+    def __str__(self):
+        return self.Product.name
+    
+    class Meta:
+        verbose_name = "Rasmi"
+        verbose_name_plural = "Rasmlar"
+
 
 
 
