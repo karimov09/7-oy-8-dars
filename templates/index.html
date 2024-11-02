@@ -65,121 +65,229 @@
                </div>
             </div>
          </div>
-         <!-- header top section start -->
-         <!-- logo section start -->
-         <div class="logo_section">
-            <div class="container">
-               <div class="row">
-                  <div class="col-sm-12">
-                     <div class="logo"><a href="index.html"><img src="{% static 'images/logo.png' %}"></a></div>
-                  </div>
-               </div>
+<!-- header top section start -->
+<!-- logo section start -->
+<div class="logo_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="logo"><a href="index.html"><img src="{% static 'images/logo.png' %}" alt="Logo"></a></div>
             </div>
-         </div>
-         <!-- logo section end -->
-         <!-- header section start -->
-         <div class="header_section">
-            <div class="container">
-               <div class="containt_main">
-                  <div id="mySidenav" class="sidenav">
-                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                     <a href="{% url 'home' %}">Home</a>
-                     <a href="#">Fashion</a>
-                     <a href="{% url 'electronic' %}">Electronic</a>
-                     <a href="{% url 'jewellery' %}">Jewellery</a>
-                  </div>
-                  <span class="toggle_icon" onclick="openNav()"><img src="{ % static 'images/toggle-icon.png' %}"></span>
-                  <div class="dropdown">
-                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category 
-                     </button>
-                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                     </div>
-                  </div>
-                  <div class="main">
-                     <!-- Another variation with a button -->
-                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search this blog">
-                        <div class="input-group-append">
-                           <button class="btn btn-secondary" type="button" style="background-color: #f26522; border-color:#f26522 ">
+        </div>
+    </div>
+</div>
+
+
+<input type="hidden" value="0" id="rating-input" name="rating">
+
+<!-- header section start -->
+<div class="header_section">
+   <div class="container">
+       <div class="containt_main">
+           <div id="mySidenav" class="sidenav">
+               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+               <a href="{% url 'home' %}">Home</a>
+               <a href="#">Fashion</a>
+               <a href="{% url 'electronic' %}">Electronic</a>
+               <a href="{% url 'jewellery' %}">Jewellery</a>
+           </div>
+           <span class="toggle_icon" onclick="openNav()"><img src="{% static 'images/toggle-icon.png' %}" alt="Toggle Icon"></span>
+           <div class="dropdown">
+               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   All Category
+               </button>
+               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                   <a class="dropdown-item" href="#">Action</a>
+                   <a class="dropdown-item" href="#">Another action</a>
+                   <a class="dropdown-item" href="#">Something else here</a>
+               </div>
+           </div>
+           <div class="main">
+               <!-- Search bar -->
+               <div class="input-group">
+                   <input type="text" class="form-control" placeholder="Search this blog">
+                   <div class="input-group-append">
+                       <button class="btn btn-secondary" type="button" style="background-color: #f26522; border-color:#f26522 ">
                            <i class="fa fa-search"></i>
-                           </button>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="header_box">
-                     <div class="lang_box ">
-                        <a href="#" title="Language" class="nav-link" data-toggle="dropdown" aria-expanded="true">
-                        <img src="{% static 'images/flag-uk.png' %}" alt="flag" class="mr-2 " title="United Kingdom"> English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
-                        </a>
-                        <div class="dropdown-menu ">
-                           <a href="#" class="dropdown-item">
-                           <img src="{% static 'images/flag-france.png' %}" class="mr-2" alt="flag">
-                           French
-                           </a>
-                        </div>
-                     </div>
-                     <div class="login_menu">
-                        <ul>
-                           <li><a href="#">
-                              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                              <span class="padding_10">Cart</span></a>
-                           </li>
-                           <li><a href="#">
-                              <i class="fa fa-user" aria-hidden="true"></i>
-                              <span class="padding_10">Cart</span></a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
+                       </button>
+                   </div>
                </div>
-            </div>
-         </div>
-         <!-- header section end -->
-         <!-- banner section start -->
-         <div class="banner_section layout_padding">
-            <div class="container">
-               <div id="my_slider" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                     <div class="carousel-item active">
-                        <div class="row">
-                           <div class="col-sm-12">
-                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
-                              <div class="buynow_bt"><a href="#">Buy Now</a></div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="carousel-item">
-                        <div class="row">
-                           <div class="col-sm-12">
-                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
-                              <div class="buynow_bt"><a href="#">Buy Now</a></div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="carousel-item">
-                        <div class="row">
-                           <div class="col-sm-12">
-                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
-                              <div class="buynow_bt"><a href="#">Buy Now</a></div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
-                  <i class="fa fa-angle-left"></i>
-                  </a>
-                  <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
-                  <i class="fa fa-angle-right"></i>
-                  </a>
+           </div>
+           <div class="header_box">
+               <div class="lang_box">
+                   <a href="#" title="Language" class="nav-link" data-toggle="dropdown" aria-expanded="true">
+                       <img src="{% static 'images/flag-uk.png' %}" alt="flag" class="mr-2" title="United Kingdom"> English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                   </a>
+                   <div class="dropdown-menu">
+                       <a href="#" class="dropdown-item">
+                           <img src="{% static 'images/flag-france.png' %}" class="mr-2" alt="flag"> French
+                       </a>
+                   </div>
                </div>
-            </div>
-         </div>
-         <!-- banner section end -->
-      </div>
-      <!-- banner bg main end -->
+               <div class="login_menu">
+                   <ul>
+                       <li><a href="#">
+                           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                           <span class="padding_10">Cart</span></a>
+                       </li>
+                       <li><a href="#">
+                           <i class="fa fa-user" aria-hidden="true"></i>
+                           <span class="padding_10">Profile</span></a>
+                       </li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<!-- header section end -->
+<!-- banner section start -->
+<div class="banner_section layout_padding">
+   <div class="container">
+       <div id="my_slider" class="carousel slide" data-ride="carousel">
+           <div class="carousel-inner">
+               <div class="carousel-item active">
+                   <div class="row">
+                       <div class="col-sm-12">
+                           <h1 class="banner_taital">Get Started <br>Your Favorite Shopping</h1>
+                           <div class="buynow_bt"><a href="#">Buy Now</a></div>
+                       </div>
+                   </div>
+               </div>
+               <div class="carousel-item">
+                   <div class="row">
+                       <div class="col-sm-12">
+                           <h1 class="banner_taital">Get Started <br>Your Favorite Shopping</h1>
+                           <div class="buynow_bt"><a href="#">Buy Now</a></div>
+                       </div>
+                   </div>
+               </div>
+               <div class="carousel-item">
+                   <div class="row">
+                       <div class="col-sm-12">
+                           <h1 class="banner_taital">Get Started <br>Your Favorite Shopping</h1>
+                           <div class="buynow_bt"><a href="#">Buy Now</a></div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
+               <i class="fa fa-angle-left"></i>
+           </a>
+           <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
+               <i class="fa fa-angle-right"></i>
+           </a>
+       </div>
+   </div>
+</div>
+<!-- banner section end -->
+
+<!-- Form for submitting a review -->
+<form action="{% url 'submit_review' %}" method="post">
+   {% csrf_token %}
+   <input type="hidden" value="0" id="rating-input" name="rating">
+   <div class="form-group">
+       <label for="comment">Your Comment:</label>
+       <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+   </div>
+   <!-- Rating container -->
+   <div class="container" id="rating-container">
+       <i class="star" data-id="1">★</i>
+       <i class="star" data-id="2">★</i>
+       <i class="star" data-id="3">★</i>
+       <i class="star" data-id="4">★</i>
+       <i class="star" data-id="5">★</i>
+   </div>
+   <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<!-- CSS for the rating container -->
+<style>
+  #rating-container {
+      font-size: 30px;
+      cursor: default;
+  }
+  #rating-container .star {
+      cursor: pointer;
+      color: #ccc;
+  }
+  #rating-container .star.checked {
+      color: coral;
+  }
+</style>
+
+<!-- JavaScript for the rating functionality -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const ratingInput = document.querySelector('#rating-input');
+      document.querySelectorAll('#rating-container .star').forEach(el => {
+          el.addEventListener('click', () => {
+              const id = el.getAttribute('data-id');
+
+              // Clear previous selections
+              document.querySelectorAll('#rating-container .star').forEach(e => e.classList.remove('checked'));
+
+              // Highlight up to the selected star
+              for (let index = 1; index <= id; index++) {
+                  document.querySelector(`#rating-container .star[data-id="${index}"]`).classList.add('checked');
+              }
+
+              ratingInput.value = id; // Update the hidden input with the selected rating
+          });
+      });
+  });
+</script>
+
+
+
+        
+
+        <!-- Review Submission Form -->
+        <form action="{% url 'submit_review' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" id="rating-input" name="rating" value="0">
+            <textarea name="comment" placeholder="Write your comment here" required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+<!-- CSS for Products and Reviews -->
+<style>
+   .product {
+       margin-bottom: 20px;
+       padding: 10px;
+       border: 1px solid #ddd;
+   }
+   .reviews {
+       margin-top: 15px;
+   }
+   .review {
+       padding: 5px;
+       background-color: #f9f9f9;
+       margin-bottom: 10px;
+   }
+</style>
+
+<style>
+   .product {
+       margin-bottom: 20px;
+       padding: 10px;
+       border: 1px solid #ddd;
+   }
+   .reviews {
+       margin-top: 15px;
+   }
+   .review {
+       padding: 5px;
+       background-color: #f9f9f9;
+       margin-bottom: 10px;
+   }
+</style>
+
+<input type="hidden" value="0" id="rating-input" name="rating">
+
       <!-- fashion section start -->
       <div class="fashion_section">
          <div id="main_slider" class="carousel slide" data-ride="carousel">

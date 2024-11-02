@@ -11,11 +11,13 @@ class ImageInline(admin.StackedInline):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [
-        ImageInline,
-    ]
+   
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name')
+    list_display = ('pk', 'name', 'category')
+    list_editable = ('category',)
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [
+        ImageInline
+    ]
