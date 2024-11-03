@@ -1,0 +1,46 @@
+<!-- product_detail.html -->
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ product.name }}</h2>
+    <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+    <p>{{ product.description }}</p>
+    <p>Narxi: {{ product.price }} so'm</p>
+
+    <!-- Sharhlar bo'limi -->
+    <h3>Sharhlar</h3>
+    <div class="reviews">
+        {% for review in product.review_set.all %}
+            <div class="review p-3 mb-3 border rounded">
+                <p><strong>Rating:</strong> {{ review.rating }} ★</p>
+                <p><strong>Comment:</strong> {{ review.comment }}</p>
+            </div>
+        {% empty %}
+            <p>Hozircha sharhlar yo'q.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Sharh qo'shish formasi -->
+    <h3>Sharh qo'shish</h3>
+    <form action="{% url 'submit_review' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <div class="form-group">
+            <label for="comment">Sharhingiz:</label>
+            <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Sharh yozing" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rating">Reyting:</label>
+            <select class="form-control" id="rating" name="rating">
+                <option value="1">1 ★</option>
+                <option value="2">2 ★</option>
+                <option value="3">3 ★</option>
+                <option value="4">4 ★</option>
+                <option value="5">5 ★</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Sharh qo'shish</button>
+    </form>
+</div>
+{% endblock %}

@@ -183,110 +183,114 @@
 </div>
 <!-- banner section end -->
 
-<!-- Form for submitting a review -->
-<form action="{% url 'submit_review' %}" method="post">
-   {% csrf_token %}
-   <input type="hidden" value="0" id="rating-input" name="rating">
-   <div class="form-group">
-       <label for="comment">Your Comment:</label>
-       <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
-   </div>
-   <!-- Rating container -->
-   <div class="container" id="rating-container">
-       <i class="star" data-id="1">★</i>
-       <i class="star" data-id="2">★</i>
-       <i class="star" data-id="3">★</i>
-       <i class="star" data-id="4">★</i>
-       <i class="star" data-id="5">★</i>
-   </div>
-   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<!-- Review Submission Form -->
+<div class="container mt-5">
+   <h2>Submit Your Review</h2>
+   <form action="{% url 'submit_review' %}" method="post">
+       {% csrf_token %}
+       <input type="hidden" name="product_id" value="{{ product.id }}">
+       <input type="hidden" id="rating-input" name="rating" value="0">
 
-<!-- CSS for the rating container -->
+       <!-- Comment Input -->
+       <div class="form-group">
+           <label for="comment">Your Comment:</label>
+           <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Write your comment here" required></textarea>
+       </div>
+
+       <!-- Rating Container -->
+       <div class="container mt-3 mb-3" id="rating-container">
+           <i class="star" data-id="1">★</i>
+           <i class="star" data-id="2">★</i>
+           <i class="star" data-id="3">★</i>
+           <i class="star" data-id="4">★</i>
+           <i class="star" data-id="5">★</i>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit Review</button>
+   </form>
+
+   <!-- Success Message -->
+   {% if messages %}
+       {% for message in messages %}
+           <div class="alert alert-success mt-3">
+               {{ message }}
+           </div>
+       {% endfor %}
+   {% endif %}
+</div>
+
+<!-- Display Reviews Section -->
+<div class="container mt-5">
+   <h3>Customer Reviews</h3>
+   <div class="reviews">
+       {% if product.comments.exists %}
+           <ul>
+               {% for comment in product.comments.all %}
+                   <li class="review p-3 mb-3 border rounded">
+                       <p><strong>{{ comment.user.username }}:</strong> {{ comment.comment }} ({{ comment.rating }} ★)</p>
+                       <small>{{ comment.created_at }}</small>
+                   </li>
+               {% endfor %}
+           </ul>
+       {% else %}
+           <p>No reviews yet. Be the first to leave a review!</p>
+       {% endif %}
+   </div>
+</div>
+
+<!-- CSS for the form and reviews -->
 <style>
-  #rating-container {
-      font-size: 30px;
-      cursor: default;
-  }
-  #rating-container .star {
-      cursor: pointer;
-      color: #ccc;
-  }
-  #rating-container .star.checked {
-      color: coral;
-  }
+   /* Rating Container Styles */
+   #rating-container {
+       font-size: 30px;
+       cursor: default;
+   }
+   #rating-container .star {
+       cursor: pointer;
+       color: #ccc;
+   }
+   #rating-container .star.checked {
+       color: coral;
+   }
+
+   /* Product and Reviews Section Styles */
+   .product {
+       margin-bottom: 20px;
+       padding: 10px;
+       border: 1px solid #ddd;
+   }
+   .reviews {
+       margin-top: 15px;
+   }
+   .review {
+       padding: 10px;
+       background-color: #f9f9f9;
+       margin-bottom: 10px;
+   }
 </style>
 
 <!-- JavaScript for the rating functionality -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const ratingInput = document.querySelector('#rating-input');
-      document.querySelectorAll('#rating-container .star').forEach(el => {
-          el.addEventListener('click', () => {
-              const id = el.getAttribute('data-id');
+   document.addEventListener('DOMContentLoaded', function() {
+       const ratingInput = document.querySelector('#rating-input');
+       document.querySelectorAll('#rating-container .star').forEach(el => {
+           el.addEventListener('click', () => {
+               const id = el.getAttribute('data-id');
 
-              // Clear previous selections
-              document.querySelectorAll('#rating-container .star').forEach(e => e.classList.remove('checked'));
+               // Clear all previous selections
+               document.querySelectorAll('#rating-container .star').forEach(e => e.classList.remove('checked'));
 
-              // Highlight up to the selected star
-              for (let index = 1; index <= id; index++) {
-                  document.querySelector(`#rating-container .star[data-id="${index}"]`).classList.add('checked');
-              }
+               // Add 'checked' class to selected stars
+               for (let index = 1; index <= id; index++) {
+                   document.querySelector(`#rating-container .star[data-id="${index}"]`).classList.add('checked');
+               }
 
-              ratingInput.value = id; // Update the hidden input with the selected rating
-          });
-      });
-  });
+               // Update the hidden rating input value
+               ratingInput.value = id;
+           });
+       });
+   });
 </script>
-
-
-
-        
-
-        <!-- Review Submission Form -->
-        <form action="{% url 'submit_review' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <input type="hidden" id="rating-input" name="rating" value="0">
-            <textarea name="comment" placeholder="Write your comment here" required></textarea>
-            <button type="submit">Submit Review</button>
-        </form>
-    </div>
-
-<!-- CSS for Products and Reviews -->
-<style>
-   .product {
-       margin-bottom: 20px;
-       padding: 10px;
-       border: 1px solid #ddd;
-   }
-   .reviews {
-       margin-top: 15px;
-   }
-   .review {
-       padding: 5px;
-       background-color: #f9f9f9;
-       margin-bottom: 10px;
-   }
-</style>
-
-<style>
-   .product {
-       margin-bottom: 20px;
-       padding: 10px;
-       border: 1px solid #ddd;
-   }
-   .reviews {
-       margin-top: 15px;
-   }
-   .review {
-       padding: 5px;
-       background-color: #f9f9f9;
-       margin-bottom: 10px;
-   }
-</style>
-
-<input type="hidden" value="0" id="rating-input" name="rating">
 
       <!-- fashion section start -->
       <div class="fashion_section">

@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View, ListView, DetailView
 from django.contrib import messages
-from .models import Product, Category, Review, 
+from .models import Product, Category, Review, Comment
+from .forms import CommentForm
+
 
 
 class Index(View):
@@ -9,7 +11,6 @@ class Index(View):
         products = Product.objects.all()
         categories = Category.objects.all()
 
-        # Har bir mahsulot uchun sharhlarni qo'shish
         product_reviews = {}
         for product in products:
             product_reviews[product.id] = Review.objects.filter(product=product)
@@ -17,38 +18,49 @@ class Index(View):
         context = {
             "products": products,
             "categories": categories,
-            "product_reviews": product_reviews,  # Har bir mahsulot uchun sharhlar
+            "product_reviews": product_reviews, 
             'organic_products': products.filter(quality='or')
         }
         return render(request, 'index.html', context)
 
 
+def add_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Izoh qo'shildi")
+            return redirect('izohlar')  
+    else:
+        form = CommentForm()
+    return render(request, 'add_comment.html', {'form': form})
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'shop/product_list.html'  
+    context_object_name = 'products'
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'shop/product_detail.html'
+
 def submit_review(request):
     if request.method == 'POST':
-        rating = request.POST.get('rating')
+        product_id = request.POST.get('product_id') 
         comment = request.POST.get('comment')
-        product_id = request.POST.get('product_id')  # Form yoki URL orqali product_id ni olish
-
-        # Check if product_id is provided
-        if not product_id:
-            messages.error(request, "Product ID is required.")
-            return redirect('home')
-
-        product = get_object_or_404(Product, id=product_id)
-
-        # Ensure the rating and comment are valid
-        if not rating or not comment:
-            messages.error(request, "Both rating and comment are required.")
-            return redirect('home')
-
-        # Save the review to the database
-        review = Review(product=product, rating=rating, comment=comment)
-        review.save()
+        rating = request.POST.get('rating')
         
-        messages.success(request, "Review successfully saved!")
-        return redirect('home')
-    else:
-        return redirect('home')
+        if product_id and comment and rating: 
+            try:
+                product = Product.objects.get(id=product_id)  
+                Review.objects.create(product=product, comment=comment, rating=rating)  
+                return redirect('product_detail', pk=product_id)  
+            except Product.DoesNotExist:
+                return redirect('product_list')  
+        else:
+            return redirect('product_list')
+    return redirect('product_list')  
 
 def home(request):
     return render(request, 'index.html')
