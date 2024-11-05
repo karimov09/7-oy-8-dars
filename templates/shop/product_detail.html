@@ -1,0 +1,30 @@
+<!-- templates/shop/product_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ object.name }}</title>
+</head>
+<body>
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.description }}</p>
+    <p>Narx: {{ object.price }}</p>
+
+    <!-- Izoh qo'shish -->
+    <h2>Sharh qoldirish</h2>
+    <form action="{% url 'submit_review' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ object.pk }}">
+        <textarea name="comment" placeholder="Izoh qoldiring"></textarea>
+        <select name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <button type="submit">Izoh qoldirish</button>
+    </form>
+
+    <a href="{% url 'product_list' %}">Orqaga qaytish</a>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- templates/category_products.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ category.name }}</title>
+</head>
+<body>
+    <h1>{{ category.name }} bo'yicha mahsulotlar</h1>
+
+    <div>
+        {% for product in products %}
+            <div>
+                <h2><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h2>
+                <p>{{ product.description|truncatewords:20 }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'product_list' %}">Barcha mahsulotlarga qaytish</a>
+</body>
+</html>

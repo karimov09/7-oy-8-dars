@@ -1,0 +1,16 @@
+<!-- templates/add_comment.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Izoh qo'shish</title>
+</head>
+<body>
+    <h1>Izoh qo'shish</h1>
+    <form method="post" action="{% url 'add_comment' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Saqlash</button>
+    </form>
+    <a href="{% url 'product_list' %}">Orqaga qaytish</a>
+</body>
+</html>

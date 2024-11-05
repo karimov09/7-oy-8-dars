@@ -1,66 +1,75 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, ListView, DetailView
 from django.contrib import messages
-from .models import Product, Category, Review, Comment
+from django.db.models import Count, Q
+from .models import Product, Category, Review
 from .forms import CommentForm
 
+class ProductListView(ListView):
+    model = Product
+    template_name = 'shop/product_list.html'
+    context_object_name = 'products'
 
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Product.objects.filter(
+                Q(name__icontains=query) |
+                Q(description__icontains=query) |
+                Q(category__name__icontains=query)
+            )
+        return Product.objects.all()
 
-class Index(View):
-    def get(self, request):
-        products = Product.objects.all()
-        categories = Category.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.annotate(product_count=Count('products'))
+        return context
 
-        product_reviews = {}
-        for product in products:
-            product_reviews[product.id] = Review.objects.filter(product=product)
+def category_products(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    products = Product.objects.filter(category=category)
 
-        context = {
-            "products": products,
-            "categories": categories,
-            "product_reviews": product_reviews, 
-            'organic_products': products.filter(quality='or')
-        }
-        return render(request, 'index.html', context)
+    context = {
+        'category': category,
+        'products': products,
+    }
+    return render(request, 'category_products.html', context)
 
+def search_products(request):
+    query = request.GET.get('q')
+    products = Product.objects.filter(name__icontains=query)
+    categories = Category.objects.all()
+    return render(request, 'shop/product_list.html', {'products': products, 'categories': categories})
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'shop/product_detail.html'
 
 def add_comment(request):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Izoh qo'shildi")
-            return redirect('izohlar')  
+            messages.success(request, "Izoh qo'shildi!")
+            return redirect('home')  
     else:
         form = CommentForm()
     return render(request, 'add_comment.html', {'form': form})
 
-
-class ProductListView(ListView):
-    model = Product
-    template_name = 'shop/product_list.html'  
-    context_object_name = 'products'
-
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = 'shop/product_detail.html'
-
 def submit_review(request):
     if request.method == 'POST':
-        product_id = request.POST.get('product_id') 
+        product_id = request.POST.get('product_id')
         comment = request.POST.get('comment')
         rating = request.POST.get('rating')
-        
-        if product_id and comment and rating: 
-            try:
-                product = Product.objects.get(id=product_id)  
-                Review.objects.create(product=product, comment=comment, rating=rating)  
-                return redirect('product_detail', pk=product_id)  
-            except Product.DoesNotExist:
-                return redirect('product_list')  
+
+        if product_id and comment and rating:
+            product = get_object_or_404(Product, id=product_id)
+            Review.objects.create(product=product, comment=comment, rating=rating)
+            messages.success(request, "Sizning sharhingiz qo'shildi!")
+            return redirect('product_detail', pk=product_id)
         else:
-            return redirect('product_list')
-    return redirect('product_list')  
+            messages.error(request, "Barcha maydonlar to'ldirilishi kerak.")
+    return redirect('product_list')
 
 def home(request):
     return render(request, 'index.html')

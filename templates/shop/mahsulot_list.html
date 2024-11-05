@@ -1,0 +1,28 @@
+<h1>Mahsulotlar ro'yxati</h1>
+
+<div>
+    <h2>Kategoriyalar</h2>
+    <ul>
+        {% for category in categories %}
+            <li>
+                {{ category.name }} ({{ category.products.count }})
+                <a href="{% url 'category_products' category.slug %}">Ko'rish</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<form method="GET" action="{% url 'search_products' %}">
+    <input type="text" name="q" placeholder="Izlash...">
+    <button type="submit">Izlash</button>
+</form>
+
+<div>
+    <h2>Mahsulotlar</h2>
+    <ul>
+        {% for product in products %}
+            <li>
+                <strong>{{ product.name }}</strong> - {{ product.description }} - {{ product.category.name }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
