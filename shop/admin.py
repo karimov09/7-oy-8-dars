@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import Category, Product, Images, Review, Comment
+from .models import Category, Product, Image, Review, Comment
 
 
 class ImageInline(admin.StackedInline):
-    model = Images
-    extra = 1
-
+    model = Image  
+    extra = 1  
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -18,11 +17,10 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'category')
     list_editable = ('category',)
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ImageInline]
+    inlines = [ImageInline]  
 
-
-@admin.register(Images)
-class ImagesAdmin(admin.ModelAdmin):
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
     list_display = ('product', 'image')
     search_fields = ('product__name',)
 
@@ -38,3 +36,4 @@ class ReviewAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('product', 'user', 'created_at', 'rating')
     list_filter = ('product', 'user')
+    search_fields = ('user__username', 'text')  

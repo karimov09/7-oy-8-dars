@@ -1,9 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import View, ListView, DetailView
+from django.views.generic import ListView, DetailView
 from django.contrib import messages
 from django.db.models import Count, Q
 from .models import Product, Category, Review
 from .forms import CommentForm
+
+def home(request):
+    return render(request, 'index.html')
+
+def jewellery(request):
+    return render(request, 'jewellery.html')
+
+def electronic(request):
+    return render(request, 'electronic.html')
+
+def product_list(request):
+    product_type = request.GET.get('type')  
+    if product_type:
+        products = Product.objects.filter(product_type=product_type)
+    else:
+        products = Product.objects.all()
+    return render(request, 'product_list.html', {'products': products})
 
 class ProductListView(ListView):
     model = Product
@@ -28,7 +45,6 @@ class ProductListView(ListView):
 def category_products(request, slug):
     category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category)
-
     context = {
         'category': category,
         'products': products,
@@ -41,20 +57,23 @@ def search_products(request):
     categories = Category.objects.all()
     return render(request, 'shop/product_list.html', {'products': products, 'categories': categories})
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = 'shop/product_detail.html'
 
-def add_comment(request):
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Izoh qo'shildi!")
-            return redirect('home')  
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.user = request.user  
+            comment.save()
     else:
         form = CommentForm()
-    return render(request, 'add_comment.html', {'form': form})
+
+    return render(request, 'product_detail.html', {'product': product, 'form': form})
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'shop/product_detail.html'
 
 def submit_review(request):
     if request.method == 'POST':
@@ -70,12 +89,3 @@ def submit_review(request):
         else:
             messages.error(request, "Barcha maydonlar to'ldirilishi kerak.")
     return redirect('product_list')
-
-def home(request):
-    return render(request, 'index.html')
-
-def jewellery(request):
-    return render(request, 'jewellery.html')
-
-def electronic(request):
-    return render(request, 'electronic.html')

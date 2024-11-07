@@ -56,7 +56,7 @@ class Product(models.Model):
         ordering = ('-pk',)
 
 
-class Images(models.Model):
+class Image(models.Model):
     image = models.ImageField(upload_to="products/images/", verbose_name="Rasmi")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Mahsulot", related_name="images")
 
@@ -78,7 +78,7 @@ class Review(models.Model):
         MinValueValidator(1, "Kamida 1 bo'lishi kerak"),
         MaxValueValidator(5, "Eng ko'pi bilan 5 bo'lishi kerak")
     ], verbose_name="Bahosi")
-    created = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shilgan vaqti!")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shilgan vaqti")
 
     def __str__(self):
         return f"{self.full_name} | {self.text[:100]}"
@@ -94,7 +94,8 @@ class Review(models.Model):
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.TextField(verbose_name="Izoh")
+    text = models.TextField()
+    content = models.TextField(verbose_name="Izoh")
     rating = models.IntegerField(validators=[
         MinValueValidator(1, "Kamida 1 bo'lishi kerak"),
         MaxValueValidator(5, "Eng ko'pi bilan 5 bo'lishi kerak")
