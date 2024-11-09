@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.db.models import Count, Q
 from .models import Product, Category, Review
 from .forms import CommentForm
+from django.core.paginator import Paginator
 
 def home(request):
     return render(request, 'index.html')
@@ -13,6 +14,19 @@ def jewellery(request):
 
 def electronic(request):
     return render(request, 'electronic.html')
+
+
+
+def product_view(request):
+    object_list = YourModel.objects.all()
+    paginator = Paginator(object_list, 10)  
+    
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'index.html', {'page_obj': page_obj})
+
+
 
 def product_list(request):
     product_type = request.GET.get('type')  
